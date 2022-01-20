@@ -40,6 +40,10 @@ Terdapat 7 Main Menu dan 12 sub menu dalam Program ini
 <a href='https://docs.python.org/3/library/random.html'>Random
 
 # Progres
+<p align="center">
+ <a href="https://ibb.co/dbz2LKG"><img src="https://i.ibb.co/s5Mw63y/Picture1.png" alt="Picture1" border="0"></a>
+</p>
+Masih 75% dari 100% progresss yang terrealissasi , di karenakan program yang belum terealisasi masih ada 
 
 # anggota kelompok
 Muhamad Riko      18.83.0143 <br>
