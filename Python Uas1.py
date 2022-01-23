@@ -1,29 +1,75 @@
-import pandas as pd
-import requests
-import tabulate
-from tabulate import tabulate 
+import mysql.connector
+import os
 
-response = requests.get("https://api.abcfdab.cfd/students/")
-data = response.json()
-datafix = data['data']
-print("1 Tampilkan semua data tabulate")
-print("2 Tampilkan berdasarkan limit")
-print("3 cari berdasarkan nim")
-print("0 exit")
-pilihan = int(input("Pilih Menu > "))
-if pilihan == 1:
-  dataset = datafix
-  header = dataset[0].keys()
-  rows =  [x.values() for x in dataset]
-  print(tabulate.tabulate(rows, header))
-elif pilihan == 2:
-  df = pd.DataFrame(datafix)
-  p = int(input("masukkan limit : "))
-  hasil = df.head(p)
-  print(hasil)
-elif pilihan == 3:
-  a = input("masukkan nim : " )
-  res = next(item for item in datafix if item["nim"] == a )
-  print(tabulate(res, headers=['id', 'nim', 'nama', 'jk', 'jurusan', 'alamat']))
-elif pilihan == 0:
-  exit
+#KONEKSI
+
+config=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="db_akademik_0143"
+)
+
+def select_all_data():
+    cursor = config.cursor()
+    sql = "SELECT * FROM tbl_students_0143"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    if cursor.rowcount < 0:
+        print("data tidak tersedia")
+    else:
+        for data in results:
+            print(data)
+def range_data():
+    nim = input("Masukkan limit : ")
+    cursor = config.cursor()
+    sql = "SELECT * FROM tbl_students_0143 WHERE id BETWEEN 1 AND %s"
+    val = (nim,)
+    cursor.execute(sql, val)
+    results = cursor.fetchall()
+
+    if cursor.rowcount < 0:
+        print("data tidak tersedia")
+    else:
+        for data in results:
+            print(data)
+            
+def select_single_data():
+    nim = input("Masukkan NIM yang dicari: ")
+    cursor = config.cursor()
+    sql = "SELECT * FROM tbl_students_0143 WHERE nim=%s"
+    val = (nim,)
+    cursor.execute(sql, val)
+    results = cursor.fetchone()
+
+    if cursor.rowcount < 0:
+        print("data tidak tersedia")
+    else:
+        for data in results:
+            print(data)
+
+def menu():
+    print("1. Select all Data")
+    print("2. Cari Data berdasar limit")
+    print("5. Cari Data berdasar nim")
+    print("0. Keluar")
+
+    option = input("Pilih Menu> ")
+
+    os.system("clear")
+
+    if option == "1":
+        select_all_data()
+    elif option == "2":
+        range_data()
+    elif option == "3":
+        select_single_data()
+    elif option == "0":
+        exit()
+    else:
+        print("Pilih Menu yang valid")
+
+if __name__ == '__main__':
+    while(True):
+        menu()            
